@@ -1,0 +1,27 @@
+textarea {
+  width: 550px;
+  height: 440px;
+  resize: none;
+}
+
+.container {
+  display: flex;
+}
+
+.bodyRequest, .bodyResponse {
+  flex: 1;
+  margin: 10px; /* Add margin to separate the divs */
+}
+
+.title-container {
+  display: flex;
+  align-items: center;
+}
+
+.RequestTitle{
+  margin-left: 217px;
+}
+
+.ResponseTitle{
+  margin-left: 455px;
+}

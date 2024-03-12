@@ -1,0 +1,853 @@
+<body [class.overlay-ui]="!isConnected">
+
+  <div *ngIf="!isConnected" class="overlay">
+    <mat-progress-bar style=" width: 40%;" mode="indeterminate"></mat-progress-bar>
+    <p>Attempting to reconnect...</p>
+  </div>
+
+  <header>
+    <mat-sidenav-container class="tabs">
+      <mat-sidenav-content fixedInViewport="true">
+        <mat-toolbar class="nav-bar">
+          <button mat-icon-button aria-label="Example icon-button with heart icon">
+            <mat-icon class="icon-stats" color="white" background-color="white">query_stats</mat-icon>
+          </button>
+
+          <div>
+            <h1 class="typography2">WagerMonitor</h1>
+          </div>
+
+          <mat-card class="counter-group">
+
+            <mat-card-content>
+              <div class="typography3">
+                Stats:
+                <ng-container>
+                  <span>
+                    <button mat-stroked-button color="white" (click)="GetSuccessWagers()"
+                      (click)="toggleButtonState('success')" [class.button-clicked]="isButtonActive('success')">
+                      <mat-icon>done</mat-icon> Success: {{ dataCounter[0].value }}
+                    </button>
+                  </span>
+
+                  <span>
+                    <button mat-stroked-button color="white" (click)="GetErrorWagers()"
+                      (click)="toggleButtonState('errors')" [class.button-clicked]="isButtonActive('errors')">
+                      <mat-icon>running_with_errors</mat-icon> Errors: {{ dataCounter[2].value }}
+                    </button>
+                  </span>
+
+                  <span>
+                    <button mat-stroked-button color="white" (click)="GetMissingWagers()"
+                      (click)="toggleButtonState('missing')" [class.button-clicked]="isButtonActive('missing')">
+                      <mat-icon>priority_high</mat-icon> Missing: {{ dataCounter[1].value }}
+                    </button>
+                  </span>
+
+                  <span>
+                    <button mat-stroked-button color="white" (click)="GetAllWagers()" (click)="toggleButtonState('all')"
+                      [class.button-clicked]="isButtonActive('all')">
+                      <mat-icon>category</mat-icon> All: {{ dataCounterAll[0].value }}
+                    </button>
+                  </span>
+                </ng-container>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+          <p-button *ngIf="showFilterButton" class="searchistory" (click)="openDialogSearch()">Search
+            History</p-button>
+
+          <p-button class="searchistory" (click)="showFilteredtableDialog()">Info History</p-button>
+
+
+        </mat-toolbar>
+        <!-- Add Content Here -->
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+  </header>
+
+
+
+  <div class="flex-container1">
+
+    <div id="first">
+
+      <mat-card class="example-card-g3">
+        <section>
+
+          <span *ngIf="filteredBarVisible_success" class="left-input">
+            <i class="pi pi-search"></i>
+            <input type="text" (input)="applyFilterSuccess($event)" pInputText />
+          </span>
+
+          <span *ngIf="filteredBarVisible" class="left-input">
+            <i class="pi pi-search"></i>
+            <input type="text" (input)="applyFilter($event)" pInputText />
+          </span>
+
+          <span *ngIf="filteredBarVisible_error" class="left-input">
+            <i class="pi pi-search"></i>
+            <input type="text" (input)="applyFilterError($event)" pInputText />
+          </span>
+
+          <!-- <mat-form-field *ngIf="filteredBarVisible" color="primary" class="left-input" appearance="standard">
+            <input matInput #filterInput (input)="applyFilter($event)" placeholder="Filter Wager Guid">
+          </mat-form-field> -->
+
+          <!-- <mat-form-field *ngIf="filteredBarVisible_success" color="primary" class="left-input" appearance="standard">
+            <input matInput #filterInput (input)="applyFilterSuccess($event)" placeholder="Filter Wager Guid">
+          </mat-form-field> -->
+
+          <!-- <mat-form-field *ngIf="filteredBarVisible_error" color="primary" class="left-input" appearance="standard">
+            <input matInput #filterInput (input)="applyFilterError($event)" placeholder="Filter Wager Guid">
+          </mat-form-field> -->
+
+          <mat-form-field *ngIf="filteredBarVisible_missing" color="primary" class="left-input" appearance="standard">
+            <input matInput #filterInput (input)="applyFilterMissing($event)" placeholder="Filter Wager Guid">
+          </mat-form-field>
+
+        </section>
+
+        <div>
+
+          <section *ngIf="falseisTableVisible" class="falsexample-container1 mat-elevation-z8" tabindex="0">
+            <p-table [value]="filteredDataSource" [paginator]="true" [rows]="10">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th pSortableColumn="Guid">Wager Guid</th>
+                  <th pSortableColumn="RequestDateTime">Request DateTime</th>
+                  <th pSortableColumn="ResponseDateTime">Response DateTime</th>
+                  <th pSortableColumn="Latency">Latency (Sec)</th>
+                  <th pSortableColumn="Delay">Delay</th>
+                  <th pSortableColumn="Status">Status</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr>
+                  <td (click)="openDialog(rowData.Guid)">{{rowData.Guid}}</td>
+                  <td (click)="openDialog(rowData.Guid)">{{rowData.RequestDateTime}}</td>
+                  <td (click)="openDialog(rowData.Guid)">{{rowData.ResponseDateTime}}</td>
+                  <td (click)="openDialog(rowData.Guid)">{{rowData.Latency}}</td>
+                  <td (click)="openDialog(rowData.Guid)">{{rowData.Delay}}</td>
+                  <td (click)="openDialog(rowData.Guid)">{{rowData.Status}}</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </section>
+
+          <section *ngIf="falseisTableVisible" class="falsexample-container1 mat-elevation-z8" tabindex="0">
+            <div class="mat-elevation-z8">
+              <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort>
+
+                <ng-container matColumnDef="Response Date">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> ResponseDateTime </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.ResponseDateTime}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="Delay">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> Delay </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.Delay}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Request_Date">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> RequestDateTime </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.RequestDateTime}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Latency">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> Latency(Sec) </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.Latency}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Guid">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> Wager Guid </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.Guid}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="Status">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> Status </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.Status}} </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+                <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+
+
+              </table>
+              <!-- <mat-paginator [pageSize]="30" [pageSizeOptions]="[5,10,30]" showFirstLastButtons
+                aria-label="Select page">
+              </mat-paginator> -->
+            </div>
+          </section>
+
+
+          <!------- Table Filter division ------->
+
+          <section *ngIf="filteredisTableVisible" class="falsexample-container1 mat-elevation-z8" tabindex="0">
+            <p-table [value]="filteredDataSource" [paginator]="true" [rows]="10">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th pSortableColumn="Guid">Wager Guid</th>
+                  <th pSortableColumn="RequestDateTime">Request DateTime</th>
+                  <th pSortableColumn="ResponseDateTime">Response DateTime</th>
+                  <th pSortableColumn="Latency">Latency (Sec)</th>
+                  <th pSortableColumn="Delay">Delay</th>
+                  <th pSortableColumn="Status">Status</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr>
+                  <td (click)="openDialog(rowData.Guid)">{{rowData.Guid}}</td>
+                  <td (click)="openDialog(rowData.Guid)">{{rowData.RequestDateTime}}</td>
+                  <td (click)="openDialog(rowData.Guid)">{{rowData.ResponseDateTime}}</td>
+                  <td (click)="openDialog(rowData.Guid)">{{rowData.Latency}}</td>
+                  <td (click)="openDialog(rowData.Guid)">{{rowData.Delay}}</td>
+                  <td (click)="openDialog(rowData.Guid)">{{rowData.Status}}</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </section>
+
+          <!-- <section *ngIf="filteredisTableVisible" class="falsexample-container1 mat-elevation-z8" tabindex="0">
+            <div class="mat-elevation-z8">
+              <table mat-table [dataSource]="filteredDataSource" multiTemplateDataRows matSort>
+
+                <ng-container matColumnDef="Response Date">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> ResponseDateTime </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.ResponseDateTime}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="Delay">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> Delay </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.Delay}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Request_Date">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> RequestDateTime </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.RequestDateTime}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Latency">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> Latency(Sec) </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.Latency}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Guid">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> Wager Guid </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.Guid}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="Status">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> Status </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.Status}} </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+                <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+
+
+              </table>
+            
+            </div>
+          </section> -->
+
+
+          <!------- Table division ------->
+
+          <section *ngIf="isSuccessTableVisible" class="falsexample-container1 mat-elevation-z8" tabindex="0">
+            <p-table [value]="success_dataSource" [paginator]="true" [rows]="10">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th pSortableColumn="Guid">Wager Guid</th>
+                  <th pSortableColumn="RequestDateTime">Request DateTime</th>
+                  <th pSortableColumn="ResponseDateTime">Response DateTime</th>
+                  <th pSortableColumn="Latency">Latency (Sec)</th>
+                  <th pSortableColumn="Delay">Delay</th>
+                  <th pSortableColumn="Status">Status</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr>
+                  <td (click)="openDialog(rowData.Guid)">{{rowData.Guid}}</td>
+                  <td (click)="openDialog(rowData.Guid)">{{rowData.RequestDateTime}}</td>
+                  <td (click)="openDialog(rowData.Guid)">{{rowData.ResponseDateTime}}</td>
+                  <td (click)="openDialog(rowData.Guid)">{{rowData.Latency}}</td>
+                  <td (click)="openDialog(rowData.Guid)">{{rowData.Delay}}</td>
+                  <td (click)="openDialog(rowData.Guid)">{{rowData.Status}}</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </section>
+
+          <!-- <section *ngIf="isSuccessTableVisible" class="falsexample-container1 mat-elevation-z8" tabindex="0">
+            <div class="mat-elevation-z8">
+              <table mat-table [dataSource]="success_dataSource" multiTemplateDataRows matSort>
+
+                <ng-container matColumnDef="Response Date">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> ResponseDateTime </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.ResponseDateTime}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="Delay">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> Delay </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.Delay}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Request_Date">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> RequestDateTime </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.RequestDateTime}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Latency">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> Latency(Sec) </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.Latency}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Guid">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> Wager Guid </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.Guid}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="Status">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> Status </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.Status}} </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+                <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+
+
+              </table>
+            
+            </div>
+          </section> -->
+
+          <!------- Table filtered division ------->
+
+          <section *ngIf="filteredisTableVisible_success" class="falsexample-container1 mat-elevation-z8" tabindex="0">
+            <p-table [value]="filteredDataSource_success" [paginator]="true" [rows]="10">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th pSortableColumn="Guid">Wager Guid</th>
+                  <th pSortableColumn="RequestDateTime">Request DateTime</th>
+                  <th pSortableColumn="ResponseDateTime">Response DateTime</th>
+                  <th pSortableColumn="Latency">Latency (Sec)</th>
+                  <th pSortableColumn="Delay">Delay</th>
+                  <th pSortableColumn="Status">Status</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr>
+                  <td (click)="openDialog(rowData.Guid)">{{rowData.Guid}}</td>
+                  <td (click)="openDialog(rowData.Guid)">{{rowData.RequestDateTime}}</td>
+                  <td (click)="openDialog(rowData.Guid)">{{rowData.ResponseDateTime}}</td>
+                  <td (click)="openDialog(rowData.Guid)">{{rowData.Latency}}</td>
+                  <td (click)="openDialog(rowData.Guid)">{{rowData.Delay}}</td>
+                  <td (click)="openDialog(rowData.Guid)">{{rowData.Status}}</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </section>
+
+          <!-- <section *ngIf="filteredisTableVisible_success" class="falsexample-container1 mat-elevation-z8" tabindex="0">
+            <div class="mat-elevation-z8">
+              <table mat-table [dataSource]="filteredDataSource_success" multiTemplateDataRows matSort>
+
+                <ng-container matColumnDef="Response Date">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> ResponseDateTime </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.ResponseDateTime}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="Delay">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> Delay </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.Delay}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Request_Date">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> RequestDateTime </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.RequestDateTime}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Latency">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> Latency(Sec) </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.Latency}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Guid">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> Wager Guid </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.Guid}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="Status">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> Status </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.Status}} </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+                <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+
+
+              </table>
+             
+            </div>
+          </section> -->
+
+          <!------- Table division ------->
+
+          <section *ngIf="isErrorTableVisible" class="falsexample-container1 mat-elevation-z8" tabindex="0">
+            <p-table [value]="error_dataSource" [paginator]="true" [rows]="10">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th pSortableColumn="Guid">Wager Guid</th>
+                  <th pSortableColumn="RequestDateTime">Request DateTime</th>
+                  <th pSortableColumn="ResponseDateTime">Response DateTime</th>
+                  <th pSortableColumn="Latency">Latency (Sec)</th>
+                  <th pSortableColumn="Delay">Delay</th>
+                  <th pSortableColumn="Status">Status</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr>
+                  <td (click)="openDialog(rowData.Guid)">{{rowData.Guid}}</td>
+                  <td (click)="openDialog(rowData.Guid)">{{rowData.RequestDateTime}}</td>
+                  <td (click)="openDialog(rowData.Guid)">{{rowData.ResponseDateTime}}</td>
+                  <td (click)="openDialog(rowData.Guid)">{{rowData.Latency}}</td>
+                  <td (click)="openDialog(rowData.Guid)">{{rowData.Delay}}</td>
+                  <td (click)="openDialog(rowData.Guid)">{{rowData.Status}}</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </section>
+
+          <!------- Table filtered division ------->
+
+          <section *ngIf="filteredisTableVisible_error" class="falsexample-container1 mat-elevation-z8" tabindex="0">
+            <div class="mat-elevation-z8">
+              <table mat-table [dataSource]="filteredDataSource_error" multiTemplateDataRows matSort>
+
+                <ng-container matColumnDef="Response Date">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> ResponseDateTime </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.ResponseDateTime}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="Delay">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> Delay </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.Delay}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Request_Date">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> RequestDateTime </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.RequestDateTime}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Latency">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> Latency(Sec) </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.Latency}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Guid">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> Wager Guid </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.Guid}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="Status">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> Status </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.Status}} </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+                <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+
+
+              </table>
+              <!-- <mat-paginator [pageSize]="30" [pageSizeOptions]="[5,10,30]" showFirstLastButtons
+                  aria-label="Select page">
+                </mat-paginator> -->
+            </div>
+          </section>
+
+          <!------- Table division ------->
+
+          <section *ngIf="isMissingTableVisible" class="falsexample-container1 mat-elevation-z8" tabindex="0">
+            <div class="mat-elevation-z8">
+              <table mat-table [dataSource]="missing_dataSource" multiTemplateDataRows matSort>
+
+                <ng-container matColumnDef="Response Date">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> ResponseDateTime </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.ResponseDateTime}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="Delay">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> Delay </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.Delay}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Request_Date">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> RequestDateTime </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.RequestDateTime}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Latency">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> Latency(Sec) </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.Latency}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Guid">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> Wager Guid </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.Guid}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="Status">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> Status </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.Status}} </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+                <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+
+
+              </table>
+              <!-- <mat-paginator [pageSize]="30" [pageSizeOptions]="[5,10,30]" showFirstLastButtons
+                aria-label="Select page">
+              </mat-paginator> -->
+            </div>
+
+          </section>
+
+          <!------- Table filtered division ------->
+
+          <section *ngIf="filteredisTableVisible_missing" class="falsexample-container1 mat-elevation-z8" tabindex="0">
+            <div class="mat-elevation-z8">
+              <table mat-table [dataSource]="filteredDataSource_missing" multiTemplateDataRows matSort>
+
+                <ng-container matColumnDef="Response Date">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> ResponseDateTime </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.ResponseDateTime}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="Delay">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> Delay </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.Delay}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Request_Date">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> RequestDateTime </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.RequestDateTime}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Latency">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> Latency(Sec) </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.Latency}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Guid">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> Wager Guid </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.Guid}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="Status">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> Status </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.Status}} </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+                <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+
+
+              </table>
+              <!-- <mat-paginator [pageSize]="30" [pageSizeOptions]="[5,10,30]" showFirstLastButtons
+                  aria-label="Select page">
+                </mat-paginator> -->
+            </div>
+          </section>
+
+          <!------- Table division ------->
+
+          <section *ngIf="isTableVisible" class="falsexample-container1 mat-elevation-z8" tabindex="0">
+            <div class="mat-elevation-z8">
+              <table mat-table [dataSource]="false_dataSource" multiTemplateDataRows matSort>
+
+                <ng-container matColumnDef="Response Date">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> ResponseDateTime </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.ResponseDateTime}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="Delay">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> Delay </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.Delay}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Request_Date">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> RequestDateTime </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.RequestDateTime}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Latency">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> Latency(Sec) </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.Latency}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Guid">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> Wager Guid </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.Guid}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="Status">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> Status </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.Status}} </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+                <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+
+
+              </table>
+              <!-- <mat-paginator [pageSize]="30" [pageSizeOptions]="[5,10,30]" showFirstLastButtons
+                aria-label="Select page">
+              </mat-paginator> -->
+            </div>
+
+
+          </section>
+
+        </div>
+
+      </mat-card>
+
+
+    </div>
+
+    <div class="inline-chart">
+
+      <mat-card class="card-chart">
+
+        <mat-card-content>
+          <ngx-charts-advanced-pie-chart *ngIf="showChart" class="typography5" [view]="view" [scheme]="colorScheme"
+            [results]="single" [gradient]="gradient" (select)="onSelect($event)" (activate)="onActivate($event)"
+            (deactivate)="onDeactivate($event)">
+          </ngx-charts-advanced-pie-chart>
+
+
+          <ngx-charts-advanced-pie-chart *ngIf="falseshowChart" class="typography10" [view]="view"
+            [scheme]="colorScheme" [results]="singlefalse" [gradient]="gradient" (select)="onSelect($event)"
+            (activate)="onActivate($event)" (deactivate)="onDeactivate($event)">
+          </ngx-charts-advanced-pie-chart>
+        </mat-card-content>
+
+      </mat-card>
+
+
+      <div class="services-chart">
+        <mat-card class="example-card-h">
+
+          <mat-card-header>
+          </mat-card-header>
+          <mat-card-content class="margin-container">
+
+            <div>
+              <div id="firstdiv">
+                <mat-card class="example-card-dispatcher">
+                  <mat-card-title-group>
+                    <mat-card-title class="card-title">DispatcherPWSvc</mat-card-title>
+                    <mat-card-subtitle class="card-subtitle">status<br> <mat-icon aria-hidden="false"
+                        aria-label="Example home icon" class="StatusButtons"
+                        *ngIf="isConditionDispatcherPW; else altIcon">
+                        task_alt</mat-icon></mat-card-subtitle>
+
+                  </mat-card-title-group>
+                </mat-card>
+              </div>
+
+              <div id="seconddiv">
+                <mat-card class="example-card-wagerpost">
+                  <mat-card-title-group>
+                    <mat-card-title class="card-title1">WagerPostSvc</mat-card-title>
+                    <mat-card-subtitle class="card-subtitle">status <br> <mat-icon aria-hidden="false"
+                        aria-label="Example home icon" class="StatusButtons" *ngIf="isConditionWagerPost; else altIcon">
+                        task_alt</mat-icon></mat-card-subtitle>
+
+                  </mat-card-title-group>
+                </mat-card>
+
+              </div>
+
+
+              <div id="thirddiv">
+                <mat-card class="example-card-dispatcher">
+                  <mat-card-title-group>
+                    <mat-card-title class="card-title2">Remoting</mat-card-title>
+                    <mat-card-subtitle class="card-subtitle">status <br><mat-icon aria-hidden="false"
+                        aria-label="Example home icon" class="StatusButtons" *ngIf="isConditionRemoting; else altIcon">
+                        task_alt</mat-icon></mat-card-subtitle>
+
+                  </mat-card-title-group>
+                </mat-card>
+              </div>
+
+              <div id="fourthdiv">
+                <mat-card class="example-card-wagerpost">
+                  <mat-card-title-group>
+                    <mat-card-title class="card-title3">WagerSlipPW</mat-card-title>
+                    <mat-card-subtitle class="card-subtitle">status <br><mat-icon aria-hidden="false"
+                        aria-label="Example home icon" class="StatusButtons" *ngIf="isConditioWagerSlip; else altIcon">
+                        task_alt</mat-icon></mat-card-subtitle>
+
+                  </mat-card-title-group>
+                </mat-card>
+              </div>
+
+              <ng-template #altIcon>
+                <mat-icon aria-hidden="false" aria-label="Alternate icon" class="SeverityButtons">close</mat-icon>
+              </ng-template>
+
+            </div>
+          </mat-card-content>
+
+        </mat-card>
+      </div>
+    </div>
+
+    <i class="versiondisplay">Version: {{ appVersion }}</i>
+
+  </div>
+
+
+  <p-dialog [showHeader]="true" [(visible)]="displayBasic"
+    [style]="{'width': '80vw', 'height': '780px', 'background-color': '#f7f7f7', 'color': '#333', 'box-shadow': '0 2px 10px rgba(0, 0, 0, 0.2)'}">
+    <!-- Dialog content -->
+
+    <div class="container">
+      <section class="section1" tabindex="0">
+        <div class="mat-elevation-z8">
+          <table mat-table [dataSource]="false_dataSource" multiTemplateDataRows matSort>
+
+            <ng-container matColumnDef="Response Date">
+              <th mat-header-cell *matHeaderCellDef class="typography1"> ResponseDateTime </th>
+              <td mat-cell *matCellDef="let element" class="typography1" (click)="openRequestnResponse(element.Guid)">
+                {{element.ResponseDateTime}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Delay">
+              <th mat-header-cell *matHeaderCellDef class="typography1"> Delay </th>
+              <td mat-cell *matCellDef="let element" class="typography1" (click)="openRequestnResponse(element.Guid)">
+                {{element.Delay}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="Request_Date">
+              <th mat-header-cell *matHeaderCellDef class="typography1"> RequestDateTime </th>
+              <td mat-cell *matCellDef="let element" class="typography1" (click)="openRequestnResponse(element.Guid)">
+                {{element.RequestDateTime}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="Latency">
+              <th mat-header-cell *matHeaderCellDef class="typography1"> Latency(Sec) </th>
+              <td mat-cell *matCellDef="let element" class="typography1" (click)="openRequestnResponse(element.Guid)">
+                {{element.Latency}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="Guid">
+              <th mat-header-cell *matHeaderCellDef class="typography1"> Wager Guid </th>
+              <td mat-cell *matCellDef="let element" class="typography1" (click)="openRequestnResponse(element.Guid)">
+                {{element.Guid}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Status">
+              <th mat-header-cell *matHeaderCellDef class="typography1"> Status </th>
+              <td mat-cell *matCellDef="let element" class="typography1" (click)="openRequestnResponse(element.Guid)">
+                {{element.Status}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+            <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+
+
+          </table>
+          <mat-paginator [pageSize]="20" [pageSizeOptions]="[5,10,30]" showFirstLastButtons aria-label="Select page">
+          </mat-paginator>
+        </div>
+
+
+      </section>
+
+      <section class="section2" tabindex="0">
+
+        <div class="title-container" *ngIf="isRequestResponseVisible">
+          <h2 class="RequestTitle" mat-dialog-title>Request Body</h2>
+          <div class="bodyRequest">
+            <textarea spellcheck="false" [(ngModel)]="requestText"></textarea>
+          </div>
+          <h2 class="ResponseTitle" mat-dialog-title>Response Body</h2>
+          <div class="bodyResponse">
+            <textarea spellcheck="false" [(ngModel)]="responseText"></textarea>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+
+    <ng-template pTemplate="footer">
+
+
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <!-- Angular Material Button -->
+        <button mat-button (click)="displayBasic = false" style="float: right;">
+          <mat-icon>close</mat-icon> Close
+        </button>
+      </div>
+    </ng-template>
+
+
+  </p-dialog>
+
+
+</body>

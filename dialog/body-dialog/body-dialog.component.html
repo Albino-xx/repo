@@ -1,0 +1,20 @@
+<div class="title-container">
+    <h2 class="RequestTitle" mat-dialog-title>Request Body</h2>
+    <h2 class="ResponseTitle" mat-dialog-title>Response Body</h2>
+    </div>
+    <mat-dialog-content class="mat-typography">
+        <div class="container">
+        <div class="bodyRequest">
+            <textarea spellcheck="false"> {{data.TWagerRequest | json}}</textarea>
+        </div>
+    
+    
+        
+        <div class="bodyResponse">
+            <textarea spellcheck="false"> {{data.TWagerResponse | json}}</textarea>
+        </div>
+    </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Close</button>
+    </mat-dialog-actions>

@@ -1,0 +1,957 @@
+body {
+  background-color: #f0f4f4;
+}
+
+
+
+
+.example-container2 {
+  width: 100%;
+  height: 50px;
+}
+
+.example-sidenav-content {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon {
+  background-color: #f0f4f4;
+}
+
+
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.example-sidenav {
+  padding: 20px;
+}
+
+.grey-square {
+  background-color: rgb(255, 255, 255);
+  align-items: center;
+  align-content: center;
+  display: flex;
+  margin: 24px auto 32px;
+  margin-top: 10px;
+  padding: 7px;
+  border-radius: 8px;
+  max-width: 1200px;
+  flex-direction: column;
+  align-content: center;
+}
+
+.right-counters {
+  width: 300px;
+  height: 400px;
+  margin-left: 1500px;
+  margin-bottom: 1000px;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.first-chart {
+  margin-left: 100px
+}
+
+.icon-stats {
+  color: #f0f4f4;
+}
+
+.chart-text {
+  margin-left: 1px;
+  font-family: 'Kanit', sans-serif;
+  color: rgb(58, 58, 58);
+}
+
+.chart-text2 {
+  margin-left: 30px;
+  font-family: 'Kanit', sans-serif;
+  color: rgb(58, 58, 58);
+}
+
+.material-symbols-outlined {
+  position: absolute;
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 48
+}
+
+.example-container2 {
+  width: 100%;
+  height: 50px;
+
+}
+
+.nav-bar {
+  background-color: #1074cc;
+  width: auto;
+}
+
+.example-sidenav-content {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon {
+  background-color: #f0f4f4;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.example-sidenav {
+  padding: 20px;
+}
+
+
+.grey-square {
+  background-color: rgb(255, 255, 255);
+  align-items: center;
+  align-content: center;
+  display: flex;
+  margin: 24px auto 32px;
+  margin-top: 10px;
+  padding: 7px;
+  border-radius: 8px;
+  max-width: 1200px;
+  flex-direction: column;
+  align-content: center;
+
+
+}
+
+.right-counters {
+  width: 300px;
+  height: 400px;
+  margin-left: 1500px;
+  margin-bottom: 1000px;
+
+  border: 1px solid rgba(0, 0, 0, 0.5);
+
+}
+
+#wrapper {
+  display: table;
+
+}
+
+.first-chart {
+  margin-left: 100px
+}
+
+
+
+#second {
+  display: inline-block;
+  width: 0px;
+  margin-left: 720px;
+}
+
+tr.example-detail-row {
+  height: 0;
+}
+
+
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
+
+.example-element-row td {
+  border-bottom-width: 0;
+}
+
+.example-element-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+.example-element-diagram {
+  min-width: 80px;
+  border: 2px solid black;
+  padding: 8px;
+  font-weight: lighter;
+  margin: 8px 0;
+  height: 104px;
+}
+
+.example-element-symbol {
+  font-weight: bold;
+  font-size: 40px;
+  line-height: normal;
+}
+
+.example-element-description {
+  padding: 16px;
+}
+
+.typography2 {
+  font-family: Arial, Helvetica, sans-serif;
+  color: white;
+  font-size: medium;
+}
+
+table {
+  width: 100%;
+}
+
+tr.example-detail-row {
+  height: 0;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: whitesmoke;
+  cursor: grab;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
+
+.example-element-row td {
+  border-bottom-width: 0;
+}
+
+.example-element-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+.example-element-diagram {
+  min-width: 80px;
+  border: 2px solid black;
+  padding: 8px;
+  font-weight: lighter;
+  margin: 8px 0;
+  height: 104px;
+}
+
+.example-element-symbol {
+  font-weight: bold;
+  font-size: 40px;
+  line-height: normal;
+}
+
+.example-element-description {
+  padding: 16px;
+}
+
+.example-element-description-attribution {
+  opacity: 0.5;
+}
+
+span {
+  padding-left: 20px;
+}
+
+.typography3 {
+  font-family: 'Arimo', sans-serif;
+  color: white;
+  font-size: medium;
+}
+
+.advanced-pie-legend .legend-items-container .legend-items .legend-item {
+  display: inherit !important;
+  width: 10% !important;
+}
+
+.advanced-pie-legend {
+  width: 5rem !important;
+  height: 50rem !important;
+}
+
+.swal-wide {
+  width: 850px !important;
+}
+
+
+.example-element-description-attribution {
+  opacity: 0.5;
+}
+
+@supports (-moz-appearance: none) and (display: table-cell) {
+  .container {
+    background-color: #ffdd99;
+    /* Adjust the style as needed */
+  }
+}
+
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+.example-card {
+  max-width: 600px;
+}
+
+.example-card-g1 {
+  position: absolute;
+  margin-top: 10px;
+  margin-left: 420px;
+  border-radius: 8px;
+  width: 350px;
+}
+
+
+.content {
+  display: flex;
+  margin: 24px auto 32px;
+  margin-top: 1px;
+  padding: 16px;
+  max-width: 1300px;
+  flex-direction: column;
+  align-content: center;
+}
+
+.contentby {
+  display: flex;
+  margin: 290px auto 320px;
+  max-width: 70%;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+}
+
+.flex-container {
+  position: absolute;
+  margin: auto;
+  width: 100%;
+  padding: 10px;
+
+}
+
+.flex-child:first-child {
+  margin-right: 200px;
+  justify-content: center;
+}
+
+
+.typography1 {
+  font-family: 'Kanit', sans-serif;
+  color: rgb(58, 58, 58);
+}
+
+.typography5 {
+  font-size: 20px;
+  font-family: 'Kanit', sans-serif;
+  color: rgb(58, 58, 58);
+  overflow: hidden;
+  line-height: 185%;
+
+}
+
+.typography10 {
+  position: absolute;
+  font-size: 16px;
+  font-family: 'Kanit', sans-serif;
+  color: rgb(58, 58, 58);
+  overflow: hidden;
+  line-height: 185%;
+
+}
+
+.example-card-g4 {
+  height: 400px;
+  width: 916px;
+  margin-top: 477px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 8px;
+  margin-left: 900px;
+}
+
+
+.example-header-image {
+  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+  background-size: cover;
+}
+
+
+.mat-form-field+.mat-form-field,
+.mat-raised-button {
+  margin-left: 8px;
+}
+
+.example-user-input {
+  margin-right: 8px;
+}
+
+.centered {
+  margin-left: 140px;
+  margin-bottom: 30px;
+}
+
+.versiondisplay {
+  position: fixed;
+  bottom: 0%;
+
+}
+
+#second {
+  // position: absolute;
+  top: 80px;
+  height: 200px;
+  right: 0;
+  margin-right: 375px;
+}
+
+tr.example-detail-row {
+  height: 0;
+}
+
+
+
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
+
+.example-element-row td {
+  border-bottom-width: 0;
+}
+
+.example-element-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+.example-element-diagram {
+  min-width: 80px;
+  border: 2px solid black;
+  padding: 8px;
+  font-weight: lighter;
+  margin: 8px 0;
+  height: 104px;
+}
+
+.example-element-symbol {
+  font-weight: bold;
+  font-size: 40px;
+  line-height: normal;
+}
+
+.example-element-description {
+  padding: 16px;
+}
+
+.typography1 {
+  font-family: 'Kanit', sans-serif;
+  color: rgb(58, 58, 58);
+}
+
+
+.typography2 {
+  font-family: 'Arimo', sans-serif;
+  color: white;
+}
+
+.p-dialog-mask {
+  z-index: 1000 !important; /* Adjust z-index as needed */
+}
+
+
+.example-element-description-attribution {
+  opacity: 0.5;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+.example-card {
+  max-width: 600px;
+}
+
+.example-card-g1 {
+  border-radius: 8px;
+  width: 330px;
+  height: 200px;
+}
+
+.example-card-dispatcher {
+  width: 150px;
+  margin-bottom: 8px;
+  margin-left: 60px;
+  height: 80px;
+}
+
+.example-card-wagerpost {
+  width: 150px;
+  margin-bottom: 8px;
+  height: 80px;
+
+}
+
+#thirddiv {
+  float: left;
+}
+
+#fourthdiv {
+  margin-left: 40px;
+  float: left;
+}
+
+#firstdiv {
+  float: left;
+  margin-top: 3.3%;
+}
+
+#seconddiv {
+  margin-left: 40px;
+  float: left;
+  margin-top: 3.3%;
+}
+
+.StatusButtons {
+  color: #5ac100;
+  font-size: 40px;
+}
+
+.SeverityButtons {
+  color: #c10000;
+  font-size: 40px;
+}
+
+.StatusButtons2 {
+  color: #5ac100;
+
+}
+
+.SeverityButtons2 {
+  color: #c10000;
+
+}
+
+.WitherrButtons {
+  color: #fbff00;
+}
+
+.btndispat {
+
+  margin-left: 50px;
+}
+
+.card-title {
+  font-size: 20px;
+  color: #00538e;
+}
+
+.card-title1 {
+  font-size: 20px;
+  margin-left: 9px;
+  color: #00538e;
+}
+
+.card-title2 {
+  font-size: 20px;
+  margin-left: 30px;
+  color: #00538e;
+}
+
+.card-title3 {
+  font-size: 20px;
+  margin-left: 14px;
+  color: #00538e;
+}
+
+.card-subtitle {
+  align-content: center;
+  margin-left: 53px;
+}
+
+.counter-group {
+  background-color: #1074cc;
+  margin-left: 30px;
+  border-color: #efefef;
+  padding: 5px;
+}
+
+.status-group {
+  background-color: #1074cc;
+  margin-left: 50px;
+  border-color: #efefef;
+  padding: 5px;
+}
+
+.btnwagerpost {
+  margin-left: 50px;
+}
+
+.example-card-g {
+  max-width: 800px;
+  margin-top: 730px;
+  position: absolute;
+  background-color: rgb(255, 255, 255);
+  border-radius: 8px;
+  width: 1400px;
+  margin-left: 42px;
+}
+
+
+.services-chart {
+  height: 65%;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.example-card-h {
+  margin-left: 20%;
+  margin-top: 1%;
+  height: 91%;
+  width: 74%;
+  align-items: center;
+  justify-content: center;
+  
+}
+
+.margin-container {
+  margin-left: 12%;
+  margin-top: 5%;
+  align-items: center;
+}
+
+
+.false-chart {
+  position: absolute;
+  visibility: hidden;
+}
+
+
+.example-container1 {
+  margin-top: 20px;
+  height: 500px;
+  align-self: center;
+  width: 770px;
+  margin-left: 30px;
+  overflow: auto;
+  margin-bottom: 20px;
+
+}
+
+.left-input {
+  width: 50%;
+  margin-left: 210px;
+}
+
+.falsexample-container1 {
+
+  height: auto;
+  align-self: center;
+  width: auto;
+  margin-left: 1%;
+  margin-right: 1%;
+  margin-bottom: 10%;
+  overflow: auto;
+  max-height: 500px;
+  /* Example: setting max-height to 500px */
+}
+
+button.mat-stroked-button:hover {
+  background-color: #949393;
+  transition: background-color 0.3s;
+}
+
+
+button.mat-stroked-button:active,
+button.mat-stroked-button:focus {
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+  outline: none;
+  transition: box-shadow 0.3s;
+}
+
+button.mat-stroked-button.button-clicked {
+  color: white;
+  /* White text */
+  background-color: #949393;
+  /* Blue background */
+  /* You can add other styles like border color, etc. */
+}
+
+
+.flex-parent-element {
+
+  padding: 2rem 2rem;
+}
+
+tr:hover {
+  background: whitesmoke;
+}
+
+mat-chip {
+  max-width: 200px;
+}
+
+.container-main {
+
+  pointer-events: none;
+  display: flex;
+  flex-wrap: wrap;
+
+}
+
+.inline-chart,
+#first,
+.services-chart {
+  flex: 1;
+  box-sizing: border-box;
+}
+
+.card-chart {
+  margin-left: 20%;
+  margin-top: 2.2%;
+  width: 74%;
+  height: 60%;
+
+}
+
+.card-chart mat-card-content {
+  margin-left: 7%;
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  height: 100%; 
+}
+
+
+.flex-container1 {
+  display: flex;
+  flex-wrap: wrap;
+
+}
+
+.example-card-g3 {
+  margin-left: 1.5%;
+  margin-top: 2%;
+  max-height: 150%;
+  height: 126%;
+  width: 114%;
+  border-radius: 1%;
+}
+
+
+
+
+.json-pre {
+  width: 80%;
+  /* Set the desired width */
+  margin: 0 auto;
+  /* Center the element horizontally */
+  font-size: 10px;
+  /* Set the desired font size */
+}
+
+.example-card-g2 {
+  position: absolute;
+  margin-left: 1143px;
+  margin-top: 45px;
+  border-radius: 8px;
+  width: 330px;
+  height: 385px;
+}
+
+.example-card-g4 {
+  height: 400px;
+  width: 916px;
+  margin-top: 473px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 8px;
+  margin-left: 900px;
+}
+
+
+.mat-form-field+.mat-form-field,
+.mat-raised-button {
+  margin-left: 8px;
+}
+
+
+
+.example-user-input {
+  margin-right: 8px;
+}
+
+.centered {
+  margin-left: 140px;
+  margin-bottom: 30px;
+}
+
+.mat-row {
+  height: 30px !important;
+}
+
+.mat-cell {
+  padding: 2px;
+  /* Adjust the padding to reduce the separation between cells */
+}
+
+.mat-header-cell {
+  padding: 2px;
+  /* Adjust the padding to reduce the separation between header cells */
+}
+
+.status-services {
+  margin-left: 850px;
+  position: absolute;
+  margin-top: 280px;
+  margin-bottom: 80px;
+}
+
+.searchistory {
+  margin-left: 20px;
+}
+
+.mat-column-Delay {
+  text-align: center;
+}
+
+.mat-column-Latency {
+  text-align: center;
+}
+
+.mat-cell {
+  font-size: 85%;
+}
+
+/* CSS to overlay the UI */
+.overlay-ui {
+  pointer-events: none;
+  /* Disable pointer events */
+  opacity: 0.6;
+  /* Make the UI look disabled */
+}
+
+/* Alternatively, you can have an actual overlay element */
+.overlay-element {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  /* Increased opacity for a darker overlay */
+  z-index: 1000;
+  /* Ensure it's above other content but below the snackbar */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  /* for any text you might want to add */
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  /* Dark background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  /* Stack spinner and text vertically */
+  color: white;
+  /* Light text color */
+  z-index: 10;
+  /* Make sure it's above other content */
+}
+
+tr.example-detail-row {
+  height: 0;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
+
+.example-element-row td {
+  border-bottom-width: 0;
+}
+
+.example-element-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+.example-element-diagram {
+  min-width: 80px;
+  border: 2px solid black;
+  padding: 8px;
+  font-weight: lighter;
+  margin: 8px 0;
+  height: 104px;
+}
+
+.example-element-symbol {
+  font-weight: bold;
+  font-size: 40px;
+  line-height: normal;
+}
+
+.container {
+  display: flex;
+  height: 400px
+}
+
+
+.section1 {
+  flex: 2; /* section1 will take up twice as much space as section2 */
+  padding: 10px;
+  border-right: 1px solid #ccc; /* Just for visual separation */
+}
+
+.section2 {
+  flex: 1;
+  padding: 10px;
+}
+
+
+.example-element-description {
+  padding: 16px;
+}
+
+.example-element-description-attribution {
+  opacity: 0.5;
+}
+
+textarea {
+  width: 650px;
+  height: 300px;
+  resize: none;
+}
+
+/* Add this style in your global styles.css or the component's CSS */
+.custom-dialog .p-dialog {
+  background-color: #f7f7f7; /* Light gray background */
+  color: #333; /* Dark gray text */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+}
+
+.custom-dialog .p-dialog-header,
+.custom-dialog .p-dialog-content {
+  background-color: #f7f7f7; /* Ensure the header and content also have the same background */
+}
+
+.custom-dialog .p-dialog-footer {
+  background-color: #f7f7f7; /* Footer background */
+  border-top: none; /* If you want to remove the border */
+}
+
+

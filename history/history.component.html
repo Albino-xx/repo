@@ -1,0 +1,236 @@
+<div class="example-container" autosize>
+  <mat-sidenav-container class="tabs">
+    <mat-sidenav-content fixedInViewport="true">
+      <mat-toolbar class="nav-bar">
+        <button mat-icon-button aria-label="Example icon-button with heart icon">
+          <mat-icon class="icon-stats" color="white" background-color="white">query_stats</mat-icon>
+        </button>
+
+        <div>
+          <h1 class="typography2">WagerMonitor</h1>
+        </div>
+
+        <mat-card class="counter-group">
+
+          <mat-card-content>
+            <div class="typography3">
+              Stats:
+              <ng-container>
+                <span>
+                  <button mat-stroked-button color="white" (click)="GetSuccessWagers('Success')"
+                    (click)="toggleButtonState('success')" [class.button-clicked]="isButtonActive('success')">
+                    <mat-icon>done</mat-icon> Success: {{ dataCounter_false[0].value }}
+                  </button>
+                </span>
+
+                <span>
+                  <button mat-stroked-button color="white" (click)="GetErrorWagers('Error')"
+                    (click)="toggleButtonState('errors')" [class.button-clicked]="isButtonActive('errors')">
+                    <mat-icon>running_with_errors</mat-icon> Errors: {{ dataCounter_false[2].value }}
+                  </button>
+                </span>
+
+                <span>
+                  <button mat-stroked-button color="white" (click)="GetMissingWagers('Missing')"
+                    (click)="toggleButtonState('missing')" [class.button-clicked]="isButtonActive('missing')">
+                    <mat-icon>priority_high</mat-icon> Missing: {{ dataCounter_false[1].value }}
+                  </button>
+                </span>
+
+                <span>
+                  <button mat-stroked-button color="white" (click)="GetAllWagers('')" (click)="toggleButtonState('all')"
+                    [class.button-clicked]="isButtonActive('all')">
+                    <mat-icon>category</mat-icon> Total: {{ dataCounterAll[0].value }}
+                  </button>
+                </span>
+              </ng-container>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="date-group">
+          <button mat-stroked-button color="white" class="datestitle"> <mat-icon
+              class="calendar-font">calendar_month</mat-icon>
+            Filtered from {{ startdate | date: 'dd MMM HH:mm:ss' }} to
+            {{ enddate | date: 'dd MMM HH:mm:ss' }}
+          </button>
+        </mat-card>
+        <!-- <button mat-raised-button (click)="openDialogSearch()">Search</button> -->
+
+
+      </mat-toolbar>
+      <!-- Add Content Here -->
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
+
+  <div class="flex-container1">
+
+    <div id="first">
+
+      <mat-card class="example-card-g3">
+        <section [formGroup]="selectors">
+
+          <mat-form-field color="primary" class="left-input" appearance="standard">
+            <input matInput (keyup)="filterData($event)" placeholder="Filter Wager Guid" #input>
+          </mat-form-field>
+
+        </section>
+
+        <div >
+
+          <!------- Table division ------->
+
+          <section *ngIf="isTableVisible" class="falsexample-container1 mat-elevation-z8" tabindex="0">
+            <div class="mat-elevation-z8">
+              <table mat-table [dataSource]="false_dataSource" multiTemplateDataRows matSort>
+
+                <ng-container matColumnDef="Response Date">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> ResponseDateTime </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.ResponseDateTime}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="Delay">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> Delay </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.Delay}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Request_Date">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> RequestDateTime </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.RequestDateTime}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Latency">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> Latency(Sec) </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.Latency}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Guid">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> Wager Guid </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.Guid}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="Status">
+                  <th mat-header-cell *matHeaderCellDef class="typography1"> Status </th>
+                  <td mat-cell *matCellDef="let element" class="typography1" (click)="openDialog(element.Guid)">
+                    {{element.Status}} </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+                <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+
+
+              </table>
+              <mat-paginator [pageSize]="30" [pageSizeOptions]="[5,10,30]" showFirstLastButtons
+                aria-label="Select page">
+              </mat-paginator>
+            </div>
+
+
+          </section>
+
+        </div>
+
+      </mat-card>
+
+    </div>
+
+    <div class="inline-chart">
+
+      <mat-card class="card-chart">
+
+        <mat-card-content>
+          <ngx-charts-advanced-pie-chart class="typography5" [view]="view" [scheme]="colorScheme" [results]="single"
+            [gradient]="gradient" (select)="onSelect($event)" (activate)="onActivate($event)"
+            (deactivate)="onDeactivate($event)">
+          </ngx-charts-advanced-pie-chart>
+
+        </mat-card-content>
+
+      </mat-card>
+    
+
+    <div class="services-chart">
+
+      <mat-card class="example-card-h" [class.disabled-card]="isCardDisabled">
+        <mat-card-header>
+          Disabled
+        </mat-card-header>
+        <mat-card-content>
+          <div class="margin-container">
+            <div id="firstdiv">
+              <mat-card class="example-card-dispatcher">
+                <mat-card-title-group>
+                  <mat-card-title class="card-title">DispatcherPWSvc</mat-card-title>
+                  <mat-card-subtitle class="card-subtitle">status<br> <mat-icon aria-hidden="false"
+                      aria-label="Example home icon" class="StatusButtons"
+                      *ngIf="isConditionDispatcherPW; else altIcon">
+                      task_alt</mat-icon></mat-card-subtitle>
+
+                </mat-card-title-group>
+              </mat-card>
+            </div>
+
+            <div id="seconddiv">
+              <mat-card class="example-card-wagerpost">
+                <mat-card-title-group>
+                  <mat-card-title class="card-title1">WagerPostSvc</mat-card-title>
+                  <mat-card-subtitle class="card-subtitle">status <br> <mat-icon aria-hidden="false"
+                      aria-label="Example home icon" class="StatusButtons" *ngIf="isConditionWagerPost; else altIcon">
+                      task_alt</mat-icon></mat-card-subtitle>
+
+                </mat-card-title-group>
+              </mat-card>
+
+            </div>
+
+
+            <div id="thirddiv">
+              <mat-card class="example-card-dispatcher">
+                <mat-card-title-group>
+                  <mat-card-title class="card-title2">Remoting</mat-card-title>
+                  <mat-card-subtitle class="card-subtitle">status <br><mat-icon aria-hidden="false"
+                      aria-label="Example home icon" class="StatusButtons" *ngIf="isConditionRemoting; else altIcon">
+                      task_alt</mat-icon></mat-card-subtitle>
+
+                </mat-card-title-group>
+              </mat-card>
+            </div>
+
+            <div id="fourthdiv">
+              <mat-card class="example-card-wagerpost">
+                <mat-card-title-group>
+                  <mat-card-title class="card-title3">WagerSlipPW</mat-card-title>
+                  <mat-card-subtitle class="card-subtitle">status <br><mat-icon aria-hidden="false"
+                      aria-label="Example home icon" class="StatusButtons" *ngIf="isConditioWagerSlip; else altIcon">
+                      task_alt</mat-icon></mat-card-subtitle>
+
+                </mat-card-title-group>
+              </mat-card>
+            </div>
+
+            <ng-template #altIcon>
+              <mat-icon aria-hidden="false" aria-label="Alternate icon" class="SeverityButtons">close</mat-icon>
+            </ng-template>
+
+          </div>
+        </mat-card-content>
+
+      </mat-card>
+    </div>
+  </div>
+  
+
+
+
+
+  <ul></ul>
+  <i class="versiondisplay">Version: {{ appVersion }}</i>
+
+
+</div>
